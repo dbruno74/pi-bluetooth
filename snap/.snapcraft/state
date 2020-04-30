@@ -1,0 +1,21 @@
+!GlobalState
+assets:
+  build-packages:
+  - libatomic1-armhf-cross=8.4.0-1ubuntu1~18.04cross2
+  - libgcc-7-dev-armhf-cross=7.5.0-3ubuntu1~18.04cross1
+  - libgcc1-armhf-cross=1:8.4.0-1ubuntu1~18.04cross2
+  - cpp-arm-linux-gnueabihf=4:7.4.0-1ubuntu2.3
+  - libcilkrts5-armhf-cross=7.5.0-3ubuntu1~18.04cross1
+  - libc6-dev-armhf-cross=2.27-3ubuntu1cross1.1
+  - cpp-7-arm-linux-gnueabihf=7.5.0-3ubuntu1~18.04cross1
+  - binutils-arm-linux-gnueabihf=2.30-21ubuntu1~18.04.3
+  - gcc-7-arm-linux-gnueabihf=7.5.0-3ubuntu1~18.04cross1
+  - libstdc++6-armhf-cross=8.4.0-1ubuntu1~18.04cross2
+  - libc6-armhf-cross=2.27-3ubuntu1cross1.1
+  - linux-libc-dev-armhf-cross=4.15.0-35.38cross1.1
+  - gcc-arm-linux-gnueabihf=4:7.4.0-1ubuntu2.3
+  - libgomp1-armhf-cross=8.4.0-1ubuntu1~18.04cross2
+  - libasan4-armhf-cross=7.5.0-3ubuntu1~18.04cross1
+  - libubsan0-armhf-cross=7.5.0-3ubuntu1~18.04cross1
+  - gcc-7-arm-linux-gnueabihf-base=7.5.0-3ubuntu1~18.04cross1
+  build-snaps: []
