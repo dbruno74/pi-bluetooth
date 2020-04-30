@@ -1,6 +1,7 @@
 #!/bin/sh
 
-HCIATTACH=/usr/bin/hciattach
+BTATTACH="$SNAP"/usr/bin/btattach
+
 if grep -q "Pi 4" /proc/device-tree/model; then
   BDADDR=
 else
@@ -17,10 +18,10 @@ serial1="`cat /proc/device-tree/aliases/serial1`"
 if [ "$uart0" = "$serial1" ] ; then
 	uart0_pins="`wc -c /proc/device-tree/soc/gpio@7e200000/uart0_pins/brcm\,pins | cut -f 1 -d ' '`"
 	if [ "$uart0_pins" = "16" ] ; then
-		$HCIATTACH /dev/serial1 bcm43xx 3000000 flow - $BDADDR
+		$BTATTACH -B /dev/ttyAMA0 -P bcm -S 3000000  #- $BDADDR
 	else
-		$HCIATTACH /dev/serial1 bcm43xx 921600 noflow - $BDADDR
+		$BTATTACH -B /dev/ttyAMA0 -P bcm -S 921600 -N  #- $BDADDR
 	fi
 else
-	$HCIATTACH /dev/serial1 bcm43xx 460800 noflow - $BDADDR
+	$BTATTACH -B /dev/ttyAMA0 -P bcm -S 460800 -N #- $BDADDR
 fi

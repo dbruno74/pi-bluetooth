@@ -1,0 +1,79 @@
+name: pi-bluetooth
+version: '1.0'
+summary: Setup Bluetooth on Raspberry Pi running Ubuntu Core
+description: |
+  Confined snap meant to enable bluetooth on RPi devices on Ubuntu Core systems
+grade: stable
+confinement: strict
+base: core18
+
+apps:
+  btuart:
+    command: btuart
+    daemon: simple
+    plugs:
+      - serial-port
+      - hardware-observe
+  bthelper:
+    command: bthelper
+    plugs:
+      - serial-port
+      - hardware-observe
+  hciattach:
+    command: hciattach
+    plugs:
+      - serial-port
+      - hardware-observe
+  btattach:
+    command: btattach
+    plugs:
+      - serial-port
+      - hardware-observe
+
+parts:
+  file-dump:
+    plugin: dump
+    source: dump
+  bluez:
+    plugin: autotools
+    source: https://git.launchpad.net/~snappy-hwe-team/snappy-hwe-snaps/+git/bluez
+    source-type: git
+    source-branch: bluez/5.47
+    configflags:
+      - --prefix=/usr
+      - --libexec=/usr/lib/
+      - --enable-experimental
+      - --enable-threads
+      - --disable-cups
+      - --enable-obex
+      - --disable-systemd
+      - --disable-silent-rules
+      - --enable-test
+      - --enable-deprecated
+      - --enable-mesh
+    build-packages:
+      - libglib2.0-dev
+      - libdbus-1-dev
+      - libical-dev
+      - libreadline6-dev
+      - libudev-dev
+      - udev
+      - pkg-config
+      - libjson-c-dev
+    filesets:
+      libical1a:
+        - usr/lib/*/libical*
+    prime:
+      - usr/lib/bluetooth/bluetoothd
+      - usr/lib/bluetooth/obexd
+      - usr/bin/bluetoothctl
+      - usr/bin/obexctl
+      - usr/bin/hciconfig
+      - usr/bin/hcidump
+      - usr/bin/hciattach
+      - usr/bin/btattach
+      - usr/bin/hcitool
+      - usr/bin/sdptool
+      - usr/bin/btmon
+      - usr/bin/btmgmt
+      - usr/bin/meshctl
