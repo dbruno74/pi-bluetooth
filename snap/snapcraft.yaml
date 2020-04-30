@@ -1,4 +1,4 @@
-name: pi-bluetooth
+name: pi-bluetooth-enable
 version: '1.0'
 summary: Setup Bluetooth on Raspberry Pi running Ubuntu Core
 description: |
