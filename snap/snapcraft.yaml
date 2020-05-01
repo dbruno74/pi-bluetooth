@@ -39,16 +39,9 @@ parts:
     stage-snaps: 
       - bluez
     prime:
-      - usr/lib/bluetooth/bluetoothd
-      - usr/lib/bluetooth/obexd
-      - usr/bin/bluetoothctl
-      - usr/bin/obexctl
       - usr/bin/hciconfig
       - usr/bin/hcidump
       - usr/bin/hciattach
       - usr/bin/btattach
       - usr/bin/hcitool
       - usr/bin/sdptool
-      - usr/bin/btmon
-      - usr/bin/btmgmt
-      - usr/bin/meshctl
