@@ -1,10 +1,12 @@
-name: pi-bluetooth-enable
+name: pi-bluetooth
 version: '1.0'
 summary: Setup Bluetooth on Raspberry Pi running Ubuntu Core
 description: |
   Confined snap meant to enable bluetooth on RPi devices on Ubuntu Core systems
 grade: stable
 confinement: strict
+architectures:
+  run-on: [arm64, armhf]
 base: core18
 
 apps:
