@@ -17,21 +17,25 @@ apps:
     plugs:
       - serial-port
       - hardware-observe
+      - bluetooth-control
   bthelper:
     command: bthelper
     plugs:
       - serial-port
       - hardware-observe
+      - bluetooth-control
   hciattach:
     command: hciattach
     plugs:
       - serial-port
       - hardware-observe
+      - bluetooth-control
   btattach:
     command: btattach
     plugs:
       - serial-port
       - hardware-observe
+      - bluetooth-control
 
 parts:
   file-dump:
