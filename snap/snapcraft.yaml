@@ -30,18 +30,6 @@ apps:
       - hardware-observe
       - bluetooth-control
       - network-observe
-  hciattach:
-    command: hciattach
-    plugs:
-      - serial-port
-      - hardware-observe
-      - bluetooth-control
-  btattach:
-    command: btattach
-    plugs:
-      - serial-port
-      - hardware-observe
-      - bluetooth-control
 
 parts:
   file-dump:
@@ -55,6 +43,4 @@ parts:
       - usr/bin/hciconfig
       - usr/bin/hcidump
       - usr/bin/hciattach
-      - usr/bin/btattach
       - usr/bin/hcitool
-      - usr/bin/sdptool
