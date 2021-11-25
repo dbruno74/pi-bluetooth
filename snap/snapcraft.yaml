@@ -14,7 +14,6 @@ apps:
   btuart:
     command: btuart
     daemon: forking
-    install-mode: disable
     plugs:
       - serial-port
       - hardware-observe
@@ -22,7 +21,6 @@ apps:
   bthelper:
     command: bthelper
     daemon: oneshot
-    install-mode: disable
     after:
       - btuart
     plugs:
