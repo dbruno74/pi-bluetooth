@@ -1,27 +1,33 @@
 #!/bin/sh
 
-BTATTACH="$SNAP"/usr/bin/btattach
+set -e
 
-if grep -q "Pi 4" /proc/device-tree/model; then
-  BDADDR=
+HCIATTACH="$SNAP"/usr/bin/hciattach
+DT=/proc/device-tree
+
+# On models prior to the Pi 4, derive the Bluetooth MAC address
+# from the board serial number
+if ! grep -q "raspberrypi,4" "$DT"/model; then
+    BDADDR=
 else
-  SERIAL=`cat /proc/device-tree/serial-number | cut -c9-`
-  B1=`echo $SERIAL | cut -c3-4`
-  B2=`echo $SERIAL | cut -c5-6`
-  B3=`echo $SERIAL | cut -c7-8`
-  BDADDR=`printf b8:27:eb:%02x:%02x:%02x $((0x$B1 ^ 0xaa)) $((0x$B2 ^ 0xaa)) $((0x$B3 ^ 0xaa))`
+    SERIAL=$(cut -b9- "$DT"/serial-number)
+    B1=$(echo "$SERIAL" | cut -b3-4)
+    B2=$(echo "$SERIAL" | cut -b5-6)
+    B3=$(echo "$SERIAL" | cut -b7-8)
+    BDADDR=$(printf 'b8:27:eb:%02x:%02x:%02x' \
+        $((0x$B1 ^ 0xAA)) $((0x$B2 ^ 0xAA)) $((0x$B3 ^ 0xAA)))
 fi
 
-uart0="`cat /proc/device-tree/aliases/uart0`"
-serial1="`cat /proc/device-tree/aliases/serial1`"
-
-if [ "$uart0" = "$serial1" ] ; then
-	uart0_pins="`wc -c /proc/device-tree/soc/gpio@7e200000/uart0_pins/brcm\,pins | cut -f 1 -d ' '`"
-	if [ "$uart0_pins" = "16" ] ; then
-		$BTATTACH -B /dev/ttyAMA0 -P bcm -S 3000000  #- $BDADDR
-	else
-		$BTATTACH -B /dev/ttyAMA0 -P bcm -S 921600 -N  #- $BDADDR
-	fi
+# Connect the modem's UART to an HCI device, at an appropriate baud
+# and with flow control if possible. The "serial1" alias in the
+# device-tree points to uart0 (a PL011 aka /dev/ttyAMA0) or uart1
+# the "mini UART" aka /dev/ttyS0) depending on configuration
+if cmp -s "$DT"/aliases/uart0 "$DT"/aliases/serial1; then
+    if [ $(stat -c "%s" "$DT"/soc/gpio@7e200000/uart0_pins/brcm\,pins) -eq 16 ]; then
+        "$HCIATTACH" /dev/ttyAMA0 bcm43xx 3000000 flow - $BDADDR
+    else
+        "$HCIATTACH" /dev/ttyAMA0 bcm43xx 921600 noflow - $BDADDR
+    fi
 else
-	$BTATTACH -B /dev/ttyAMA0 -P bcm -S 460800 -N #- $BDADDR
+    "$HCIATTACH" /dev/ttyS0 bcm43xx 460800 noflow - $BDADDR
 fi
