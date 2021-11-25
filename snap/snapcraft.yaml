@@ -13,17 +13,23 @@ architectures:
 apps:
   btuart:
     command: btuart
-    daemon: simple
+    daemon: forking
+    install-mode: disable
     plugs:
       - serial-port
       - hardware-observe
       - bluetooth-control
   bthelper:
     command: bthelper
+    daemon: oneshot
+    install-mode: disable
+    after:
+      - btuart
     plugs:
       - serial-port
       - hardware-observe
       - bluetooth-control
+      - network-observe
   hciattach:
     command: hciattach
     plugs:
