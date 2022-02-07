@@ -3,7 +3,7 @@ version: '1.1'
 summary: Setup Bluetooth on Raspberry Pi running Ubuntu Core
 description: |
   Confined snap meant to enable bluetooth on RPi devices on Ubuntu Core systems
-grade: devel
+grade: stable
 confinement: strict
 base: core18
 architectures:
@@ -12,14 +12,14 @@ architectures:
 
 apps:
   btuart:
-    command: btuart
+    command: bin/btuart
     daemon: forking
     plugs:
       - serial-port
       - hardware-observe
       - bluetooth-control
   bthelper:
-    command: bthelper
+    command: bin/bthelper
     daemon: oneshot
     after:
       - btuart
