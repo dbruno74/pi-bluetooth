@@ -11,7 +11,7 @@ for dev in /sys/class/bluetooth/*; do
     dev="$(basename "$dev")"
 
     # Need to bring hci up before looking at MAC as it can be all zeros during init
-    "$HCICONFIG" "$dev" up
+    "$HCICONFIG" "$dev" up || continue
     if ! "$HCICONFIG" "$dev" | grep -q "Bus: *UART"; then
         echo "$dev: Not a UART-attached Bluetooth modem"
         continue
