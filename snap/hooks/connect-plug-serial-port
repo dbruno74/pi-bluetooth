@@ -1,0 +1,17 @@
+#! /bin/sh
+
+# we need the interface connected before enabling the daemon, 
+# else the snap is not manually installable on non-standard gadgets
+if ! snapctl is-connected serial-port; then
+	echo "please run 'snap connect ${SNAP_NAME}:serial-port <gadget-name>:<serial-port>"
+	echo "keeping services disabled for the moment"
+	exit 0
+fi
+
+# now we can start the btuart and bthelper services
+if snapctl services ${SNAP_NAME}.btuart | grep -q inactive; then
+  snapctl start --enable ${SNAP_NAME}.btuart 2>&1 || true
+fi
+if snapctl services ${SNAP_NAME}.bthelper| grep -q inactive; then
+  snapctl start --enable ${SNAP_NAME}.bthelper 2>&1 || true
+fi
