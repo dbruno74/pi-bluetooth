@@ -1,14 +1,16 @@
-name: pi-bluetooth
-version: '1.2'
+name: iotdevice-pi-bluetooth
+version: '1.0'
 summary: Setup Bluetooth on Raspberry Pi running Ubuntu Core
 description: |
   Confined snap meant to enable bluetooth on RPi devices on Ubuntu Core systems
 grade: stable
 confinement: strict
-base: core18
+base: core22
 architectures:
-  - build-on: armhf
-  - build-on: arm64
+  - build-on: [amd64, arm64]
+    build-for: arm64
+  - build-on: [amd64, armhf]
+    build-for: armhf
 
 apps:
   btuart:
@@ -37,8 +39,9 @@ parts:
     source: dump
   bluez:
     plugin: nil
-    stage-snaps: 
-      - bluez
+    override-pull: |
+      UBUNTU_STORE_ARCH=$CRAFT_TARGET_ARCH snap download bluez --channel=22/stable
+      find *.snap -exec unsquashfs -f -d $CRAFT_PART_INSTALL {} \;
     prime:
       - usr/bin/hciconfig
       - usr/bin/hcidump
